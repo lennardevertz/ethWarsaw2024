@@ -7,4 +7,4 @@ export const UNISWAP_V3_SUBGRAPH_ID = {
   ARBITRUM: 'FbCGRftH4a3yZugY7TnbYgPJVEv2LvMT6oF1fxPe9aJM',
 } as const;
 
-export const UNISWAP_V3_BASE_URL = `https://gateway.thegraph.com/api/${process.env.PLASMO_PUBLIC_UNISWAP_API_KEY}`;
+export const UNISWAP_V3_BASE_URL = `https://gateway.thegraph.com/api/${process.env.UNISWAP_API_KEY}`;
