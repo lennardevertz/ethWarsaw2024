@@ -1,7 +1,7 @@
 <br/>
 <div align="center">
   <a>
-    <img src="logo.PNG" width="350">
+    <img src="logo.png" width="350">
   </a>
   <h3 align="center">Crypto Trading Copilot</h3>
   <p align="center">
@@ -12,6 +12,7 @@ Supercharging your browsing experience with actionable trading insight
 ## Benefits
 
 - Copy-trade top-performing traders directly from their Twitter or Farcaster profiles with just one click.
+- Get actionable trading insights based on your interests
 
 ## Tech Stack
 
