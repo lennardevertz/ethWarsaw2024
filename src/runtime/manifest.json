@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "CryptoTradingCopilot",
+  "version": "0.0.1",
+  "description": "Crypto Trading Copilot",
+  "author": "ETHWarsawTeam",
+  "background": {
+    "service_worker": "service-worker.js"
+  },
+  "permissions": ["contextMenus", "tabs", "storage"],
+  "host_permissions": ["<all_urls>"],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content-script.js"],
+      "all_frames": true
+    }
+  ],
+  "icons": {},
+  "web_accessible_resources": [
+    {
+      "resources": ["webpage-script.js"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
+
