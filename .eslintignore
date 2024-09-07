@@ -1,0 +1,8 @@
+node_modules
+dist
+build
+.eslintrc.cjs
+*.config.mjs
+*.js
+*.mjs
+*.cjs

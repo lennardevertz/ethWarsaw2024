@@ -1,13 +1,21 @@
-import type { ComponentType, FC } from "react"
+import type { ComponentType, FC } from 'react';
 
-import { WithQueryClient } from "./with-query-client"
+import { WithNiceModal } from './with-nice-modal';
+import { WithPortal } from './with-portal';
+import { WithQueryClient } from './with-query-client';
 
 export const withProviders = (Component: ComponentType): FC => {
-  return () => {
+  function ComponentWithProviders() {
     return (
-      <WithQueryClient>
-        <Component />
-      </WithQueryClient>
-    )
+          <WithQueryClient>
+      <WithPortal>
+        <WithNiceModal>
+            <Component />
+        </WithNiceModal>
+      </WithPortal>
+          </WithQueryClient>
+    );
   }
-}
+
+  return ComponentWithProviders;
+};
