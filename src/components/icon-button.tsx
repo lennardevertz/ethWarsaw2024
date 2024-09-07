@@ -1,4 +1,5 @@
 import { classes } from 'utils';
+
 import { Icon, type IconName } from './icon';
 
 type Props = {

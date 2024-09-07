@@ -30,6 +30,7 @@ export default (_env, argv) => {
       new CopyPlugin({
         patterns: [
           { from: './src/runtime/manifest.json' },
+          { from: './src/common/img', to: 'img' },
         ],
       }),
       new NodePolyfillPlugin(),

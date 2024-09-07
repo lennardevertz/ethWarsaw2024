@@ -1,8 +1,9 @@
 import * as Portal from '@radix-ui/react-portal';
 import type { ReactNode } from 'react';
 
-import { IconButton } from './icon-button';
 import { usePortal } from 'app';
+
+import { IconButton } from './icon-button';
 
 type Props = {
   title: ReactNode;
@@ -12,14 +13,8 @@ type Props = {
 };
 
 export const Modal = ({ children, title, isOpened, onClose }: Props) => {
-  const { portal } = usePortal();
-
-  if (!isOpened) {
-    return null;
-  }
-
   return (
-    <Portal.Root container={portal}>
+    <ModalBase isOpened={isOpened}>
       <div className="fixed inset-0 bg-zinc-800/50" onClick={onClose} />
       <div className="fixed left-1/2 top-1/2 w-full max-w-xs -translate-x-1/2 -translate-y-1/2 rounded-lg bg-zinc-700 p-4 text-zinc-100 shadow-lg">
         <div>{title}</div>
@@ -32,6 +27,30 @@ export const Modal = ({ children, title, isOpened, onClose }: Props) => {
           iconClassName="text-[#aaa]"
         />
       </div>
+    </ModalBase>
+  );
+};
+
+type ModalBaseProps = {
+  children: ReactNode;
+  isOpened: boolean;
+  className?: string;
+};
+
+export const ModalBase = ({
+  children,
+  isOpened,
+  className,
+}: ModalBaseProps) => {
+  const { portal } = usePortal();
+
+  if (!isOpened) {
+    return null;
+  }
+
+  return (
+    <Portal.Root container={portal} className={className}>
+      {children}
     </Portal.Root>
   );
 };

@@ -4,7 +4,6 @@ export {
   COMMAND_BUS_REQUEST_MESSAGE,
 } from './constants';
 
-export { GetStarWarsCommand } from './get-star-wars-command';
 export {
   useCommandQuery,
   useCommandMutation,
@@ -13,5 +12,5 @@ export {
   Command,
 } from './command';
 export { onWindowMessage } from './on-window-message';
-export { ResolveEnsCommand } from './resolve-ens-command';
 export { CreatePaymentRequestCommand } from './create-payment-request';
+export { GetEnsAddressCommand } from './get-ens-address-command';
