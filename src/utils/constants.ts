@@ -25,12 +25,21 @@ export const getTokenIconUrl = (
   return `${TOKEN_LOGO_BASE_URL}/${network.toLowerCase()}/assets/${token_address}/logo.png`
 }
 
+/**
+ * 
+ * @param inputToken Token used for buying
+ * @param outputToken Ticker of token user wants to buy
+ * @param inputNetwork Network the user buys from
+ * @param outputNetwork Target network, == inputNetwork for simple token swap action
+ * @param inputAmount absolute amount you want to buy -> example 0.001 (if you want to buy 0.001ETH worth of outputToken)
+ * @returns 
+ */
 export const getBrianPrompt = (
-  inputToken: string, // default should always be "ETH"
-  outputToken: string, // ticker symbol of output token or token contract address
-  inputNetwork: keyof typeof UNISWAP_V3_SUBGRAPH_ID, // default should be network we deposit on -> BASE? 
-  outputNetwork: keyof typeof UNISWAP_V3_SUBGRAPH_ID, // if the copied trade happened on the same network as inputNetwork, we use outputNetwork===inputNetwork
-  inputAmount: number // absolute amount you want to buy -> example 0.001 (if you want to buy 0.001ETH worth of outputToken)
+  inputToken: string = "ETH",
+  outputToken: string,
+  inputNetwork: keyof typeof UNISWAP_V3_SUBGRAPH_ID = "BASE",
+  outputNetwork: keyof typeof UNISWAP_V3_SUBGRAPH_ID,
+  inputAmount: number
 ) => {
   if (inputNetwork===outputNetwork) {
     return `Swap ${inputAmount} of ${inputToken} to ${outputToken} on ${inputNetwork}`
