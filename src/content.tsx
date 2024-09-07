@@ -7,7 +7,6 @@ import { withProviders } from "~providers"
 
 export const getStyle = () => {
   const style = document.createElement("style")
-  console.log(style)
   style.textContent = cssText
   return style
 }
