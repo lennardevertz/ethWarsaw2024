@@ -3,7 +3,7 @@
   <a>
     <img src="logo.PNG" width="350">
   </a>
-  <h3 align="center">Copy Trading</h3>
+  <h3 align="center">Crypto Trading Copilot</h3>
   <p align="center">
 Supercharging your browsing experience with actionable trading insight
   </p>
@@ -17,3 +17,5 @@ Supercharging your browsing experience with actionable trading insight
 
 - [Aleph Zero](https://alephzero.org/)
 - [IDriss](https://github.com/idriss-crypto/ts-library)
+
+The background image used in the logo was generated with the [Midjourney](https://www.midjourney.com/) text-to-image AI model. Prompt: crypto trading copilot --v 5.2</p>
