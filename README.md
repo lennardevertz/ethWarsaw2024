@@ -5,14 +5,13 @@
   </a>
   <h3 align="center">Crypto Trading Copilot</h3>
   <p align="center">
-Supercharging your browsing experience with actionable trading insight
+Supercharging your browsing experience with actionable trading insights
   </p>
 </div>
 
 ## Benefits
 
-- Copy-trade top-performing traders directly from their Twitter or Farcaster profiles with just one click.
-- Get actionable trading insights based on your interests
+- Copy-trade your favorite traders directly from Twitter or Farcaster with just one click
 
 ## Tech Stack
 
