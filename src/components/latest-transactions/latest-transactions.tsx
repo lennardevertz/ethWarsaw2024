@@ -4,6 +4,8 @@ import { sendToBackground } from "@plasmohq/messaging"
 
 import type { SwapWithNetworkInfo } from "~background/messages/get-latest-transactions.types"
 
+import { TransactionListItem } from "./transaction-list-item"
+
 type LatestTransactionsProps = {
   walletAddress: string
 }
@@ -23,13 +25,22 @@ export const LatestTransactions = ({
     }
   })
 
-  console.log(transactions.data)
+  if (!transactions.data?.length) {
+    return null
+  }
 
   return (
-    <div className="absolute top-20 left-20 bg-green-300 text-black">
-      {transactions.data?.map((transaction) => (
-        <div key={transaction.id}>{transaction._network}</div>
-      ))}
+    <div className="bg-gray-200 px-4 py-2 rounded-lg border-l-4 border-gray-400 w-96 max-w-lg absolute top-20 left-20">
+      <ul role="list" className="divide-y divide-gray-100">
+        {transactions.data?.map((transaction) => {
+          return (
+            <TransactionListItem
+              transaction={transaction}
+              key={transaction.id}
+            />
+          )
+        })}
+      </ul>
     </div>
   )
 }

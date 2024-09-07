@@ -1,5 +1,5 @@
 import type { PlasmoMessaging } from "@plasmohq/messaging"
-import { getUniswapV3GraphlUrl, GRAPH_QL_QUERY, UNISWAP_V3_SUBGRAPH_ID } from "~utils";
+import { FILTERED_OUT_COINS, getPurchasedToken, getUniswapV3GraphlUrl, GRAPH_QL_QUERY, UNISWAP_V3_SUBGRAPH_ID } from "~utils";
 import type { LatestTransactionQueryResponse, SwapWithNetworkInfo } from "./get-latest-transactions.types";
 
 
@@ -23,15 +23,14 @@ const handler: PlasmoMessaging.MessageHandler = async (req, res) => {
         });
         const responseBody: LatestTransactionQueryResponse = await response.json()
 
-        const networkTransactions: SwapWithNetworkInfo[] = 
+        const networkTransactions: SwapWithNetworkInfo[] =
           responseBody.data.swaps.map(swap => { return { ...swap, _network: network } })
-        
 
         return networkTransactions
       })
 
     const result = await Promise.all(allNetworks)
-    res.send(result.flatMap(v => v))
+    res.send(result.flatMap(v => v).filter(v => !FILTERED_OUT_COINS.includes(getPurchasedToken(v).purchaseToken.symbol)).sort((a, b) => Number(b.timestamp) - Number(a.timestamp)).slice(0, 3))
   } catch (err) {
     console.error('❌', err)
     res.send([])

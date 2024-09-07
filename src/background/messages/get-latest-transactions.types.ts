@@ -6,7 +6,12 @@ export type LatestTransactionQueryResponse = {
     }
 }
 
-export type SwapWithNetworkInfo = Swap & {_network: keyof typeof UNISWAP_V3_SUBGRAPH_ID}
+export type SwapWithNetworkInfo = Swap & { _network: keyof typeof UNISWAP_V3_SUBGRAPH_ID }
+
+export type Token = {
+    name: string
+    symbol: string
+}
 
 export type Swap = {
     amount0: string
@@ -23,14 +28,8 @@ export type Swap = {
     sqrtPriceX96: string
     tick: string
     timestamp: string
-    token0: {
-        name: string
-        symbol: string
-    },
-    token1: {
-        name: string
-        symbol: string
-    },
+    token0: Token,
+    token1: Token,
     transaction: {
         id: string
     }

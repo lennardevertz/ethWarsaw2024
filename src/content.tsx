@@ -28,7 +28,7 @@ const ContentScript = () => {
       {/* <div className="absolute top-20 left-20 bg-green-300 text-black">
         {JSON.stringify(getStarWarsQuery.data)}
       </div> */}
-      <LatestTransactions walletAddress={TWITTER_TO_ETH["VitalikButerin"]} />
+      <LatestTransactions walletAddress={TWITTER_TO_ETH.geoist_} />
     </>
   )
 }
