@@ -92,7 +92,7 @@ export const WithWallet = ({ children }: Props) => {
       isConnectionModalOpened: walletConnectModal.visible,
     };
   }, [
-    balance,
+    balance.data,
     disconnect,
     openConnectionModal,
     wallet,
