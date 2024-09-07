@@ -1,9 +1,9 @@
 import { useCallback } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
+import { ENS_TO_AVATAR, ENS_TO_FARCASTER, ENS_TO_TWITTER } from 'consts';
 import { GetEnsAddressCommand, useCommandMutation } from 'commands';
 import { Subscription } from 'types';
-import { ENS_TO_AVATAR, ENS_TO_FARCASTER, ENS_TO_TWITTER } from 'consts';
 
 type SubscriberForm = {
   ensName: string;

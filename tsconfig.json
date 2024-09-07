@@ -31,7 +31,7 @@
       "commands": ["src/commands"],
       "components": ["src/components"],
       "types": ["src/types"],
-      "consts": ["src/consts"],
+      "consts": ["src/commands/constants"],
       "images": ["src/images"],
     }
   },

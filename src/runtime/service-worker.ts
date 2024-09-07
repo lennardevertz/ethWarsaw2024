@@ -1,5 +1,5 @@
-import { COMMAND_BUS_REQUEST_MESSAGE, COMMAND_MAP } from 'commands';
 import { EXTENSION_BUTTON_CLICKED } from 'consts';
+import { COMMAND_BUS_REQUEST_MESSAGE, COMMAND_MAP } from 'commands';
 
 chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
   if (request.type === COMMAND_BUS_REQUEST_MESSAGE) {

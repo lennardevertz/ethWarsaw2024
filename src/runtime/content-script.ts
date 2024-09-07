@@ -1,11 +1,10 @@
 import {
   COMMAND_BUS_REQUEST_MESSAGE,
-  COMMAND_BUS_RESPONSE_MESSAGE,
   CommandResponse,
   onWindowMessage,
   SerializedCommand,
 } from 'commands';
-import { EXTENSION_BUTTON_CLICKED } from 'consts';
+import { COMMAND_BUS_RESPONSE_MESSAGE, EXTENSION_BUTTON_CLICKED } from 'consts';
 
 const injectScript = () => {
   const script = document.createElement('script');
