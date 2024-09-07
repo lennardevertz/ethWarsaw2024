@@ -1,9 +1,9 @@
-import { sendToContentScript } from "@plasmohq/messaging"
+import { sendToContentScript } from '@plasmohq/messaging';
 
-export { }
+export {};
 
-chrome.action.onClicked.addListener((tab) => {
+chrome.action.onClicked.addListener(() => {
   sendToContentScript({
-    name: "EXTENSION_CLICKED"
-  })
-})
+    name: 'EXTENSION_CLICKED',
+  });
+});
