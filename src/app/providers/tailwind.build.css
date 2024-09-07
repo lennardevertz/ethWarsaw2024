@@ -552,8 +552,8 @@ video {
 .left-1\/2 {
   left: 50%;
 }
-.left-20 {
-  left: 80px;
+.left-4 {
+  left: 16px;
 }
 .right-2 {
   right: 8px;
@@ -564,14 +564,26 @@ video {
 .top-2 {
   top: 8px;
 }
-.top-20 {
-  top: 80px;
+.top-4 {
+  top: 16px;
 }
 .z-20 {
   z-index: 20;
 }
+.ml-2 {
+  margin-left: 8px;
+}
+.mt-1 {
+  margin-top: 4px;
+}
+.mt-2 {
+  margin-top: 8px;
+}
 .mt-4 {
   margin-top: 16px;
+}
+.block {
+  display: block;
 }
 .inline-block {
   display: inline-block;
@@ -579,9 +591,16 @@ video {
 .flex {
   display: flex;
 }
+.size-4 {
+  width: 16px;
+  height: 16px;
+}
 .size-8 {
   width: 32px;
   height: 32px;
+}
+.w-80 {
+  width: 320px;
 }
 .w-full {
   width: 100%;
@@ -609,6 +628,12 @@ video {
 .justify-center {
   justify-content: center;
 }
+.justify-between {
+  justify-content: space-between;
+}
+.gap-1 {
+  gap: 4px;
+}
 .space-x-2 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-x-reverse: 0;
   margin-right: calc(8px * var(--tw-space-x-reverse));
@@ -627,15 +652,39 @@ video {
 .rounded {
   border-radius: 4px;
 }
+.rounded-full {
+  border-radius: 9999px;
+}
 .rounded-lg {
   border-radius: 8px;
 }
-.bg-green-400 {
+.rounded-md {
+  border-radius: 6px;
+}
+.border {
+  border-width: 1px;
+}
+.border-l-4 {
+  border-left-width: 4px;
+}
+.border-blue-500 {
+  --tw-border-opacity: 1;
+  border-color: rgb(59 130 246 / var(--tw-border-opacity));
+}
+.border-gray-300 {
+  --tw-border-opacity: 1;
+  border-color: rgb(209 213 219 / var(--tw-border-opacity));
+}
+.bg-blue-100 {
   --tw-bg-opacity: 1;
-  background-color: rgb(74 222 128 / var(--tw-bg-opacity));
+  background-color: rgb(219 234 254 / var(--tw-bg-opacity));
 }
 .bg-transparent {
   background-color: transparent;
+}
+.bg-white {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 .bg-white\/10 {
   background-color: rgb(255 255 255 / 0.1);
@@ -650,15 +699,20 @@ video {
 .p-1 {
   padding: 4px;
 }
-.p-20 {
-  padding: 80px;
-}
 .p-4 {
   padding: 16px;
+}
+.px-3 {
+  padding-left: 12px;
+  padding-right: 12px;
 }
 .px-4 {
   padding-left: 16px;
   padding-right: 16px;
+}
+.py-2 {
+  padding-top: 8px;
+  padding-bottom: 8px;
 }
 .py-2\.5 {
   padding-top: 10px;
@@ -668,8 +722,15 @@ video {
   font-size: 18px;
   line-height: 28px;
 }
+.text-sm {
+  font-size: 14px;
+  line-height: 20px;
+}
 .font-semibold {
   font-weight: 600;
+}
+.leading-6 {
+  line-height: 24px;
 }
 .text-\[\#aaa\] {
   --tw-text-opacity: 1;
@@ -678,6 +739,18 @@ video {
 .text-black {
   --tw-text-opacity: 1;
   color: rgb(0 0 0 / var(--tw-text-opacity));
+}
+.text-gray-700 {
+  --tw-text-opacity: 1;
+  color: rgb(55 65 81 / var(--tw-text-opacity));
+}
+.text-gray-900 {
+  --tw-text-opacity: 1;
+  color: rgb(17 24 39 / var(--tw-text-opacity));
+}
+.text-red-700 {
+  --tw-text-opacity: 1;
+  color: rgb(185 28 28 / var(--tw-text-opacity));
 }
 .text-zinc-100 {
   --tw-text-opacity: 1;
@@ -693,9 +766,29 @@ video {
   --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
+.shadow-sm {
+  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.filter {
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
 .hover\:bg-\[\#53535a\]:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(83 83 90 / var(--tw-bg-opacity));
+}
+.focus\:border-blue-500:focus {
+  --tw-border-opacity: 1;
+  border-color: rgb(59 130 246 / var(--tw-border-opacity));
+}
+.focus\:outline-none:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+.focus\:ring-blue-500:focus {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(59 130 246 / var(--tw-ring-opacity));
 }
 .hover\:enabled\:bg-\[\#53535a\]:enabled:hover {
   --tw-bg-opacity: 1;
@@ -709,5 +802,12 @@ video {
 }
 .disabled\:opacity-50:disabled {
   opacity: 0.5;
+}
+@media (min-width: 640px) {
+
+  .sm\:text-sm {
+    font-size: 14px;
+    line-height: 20px;
+  }
 }
 

@@ -1,4 +1,4 @@
-import { EIP1193Provider, Hex } from "viem";
+import { EIP1193Provider, Hex } from 'viem';
 
 export type Wallet = {
   provider: EIP1193Provider;

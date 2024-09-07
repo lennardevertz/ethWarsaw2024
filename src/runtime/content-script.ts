@@ -5,6 +5,7 @@ import {
   onWindowMessage,
   SerializedCommand,
 } from 'commands';
+import { EXTENSION_BUTTON_CLICKED } from 'consts';
 
 const injectScript = () => {
   const script = document.createElement('script');
@@ -40,6 +41,16 @@ const bridgeCommunication = () => {
       );
     },
   );
+
+  chrome.runtime.onMessage.addListener(async (request) => {
+    if (request.type === EXTENSION_BUTTON_CLICKED) {
+      const message = {
+        type: EXTENSION_BUTTON_CLICKED,
+      };
+      window.postMessage(message);
+      return;
+    }
+  });
 };
 
 injectScript();

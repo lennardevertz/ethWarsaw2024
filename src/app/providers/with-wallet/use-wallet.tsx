@@ -15,6 +15,7 @@ import { useWalletConnectModal } from './use-wallet-connect-modal';
 
 interface WalletContextValue {
   wallet?: Wallet;
+  disconnect: () => void;
   openConnectionModal: () => Promise<Wallet>;
   isConnectionModalOpened: boolean;
 }
@@ -69,13 +70,18 @@ export const WithWallet = ({ children }: Props) => {
     }
   }, [walletConnectModal]);
 
+  const disconnect = useCallback(() => {
+    setWallet(undefined);
+  }, []);
+
   const contextValue: WalletContextValue = useMemo(() => {
     return {
       wallet,
       openConnectionModal,
+      disconnect,
       isConnectionModalOpened: walletConnectModal.visible,
     };
-  }, [openConnectionModal, wallet, walletConnectModal.visible]);
+  }, [disconnect, openConnectionModal, wallet, walletConnectModal.visible]);
 
   return (
     <WalletContext.Provider value={contextValue}>

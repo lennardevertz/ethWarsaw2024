@@ -1,2 +1,2 @@
 export { Application } from './app';
-export {usePortal} from './providers';
+export { usePortal } from './providers';
