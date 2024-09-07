@@ -32,7 +32,7 @@ export const getTokenIconUrl = (
  * @param inputNetwork Network the user buys from
  * @param outputNetwork Target network, == inputNetwork for simple token swap action
  * @param inputAmount absolute amount you want to buy -> example 0.001 (if you want to buy 0.001ETH worth of outputToken)
- * @returns 
+ * @returns Prompt that can be used in resolve-brian
  */
 export const getBrianPrompt = (
   inputToken: string = "ETH",
