@@ -44,3 +44,6 @@ query Swaps($address: String!) {
   }
 }
 `;
+
+
+export const TOKEN_LIST_RAW = `https://github.com/trustwallet/assets/tree/master/blockchains/${chain_name}/assets/${asset_address}/logo.png`
