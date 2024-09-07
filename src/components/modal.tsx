@@ -1,9 +1,8 @@
 import * as Portal from '@radix-ui/react-portal';
 import type { ReactNode } from 'react';
 
-import { usePortal } from '~providers';
-
 import { IconButton } from './icon-button';
+import { usePortal } from 'app';
 
 type Props = {
   title: ReactNode;

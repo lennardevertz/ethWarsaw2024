@@ -1,7 +1,6 @@
 import * as Icons from '@radix-ui/react-icons';
 import { useMemo } from 'react';
-
-import { classes } from '~utils';
+import { classes } from 'utils';
 
 export type IconName = keyof typeof Icons;
 
