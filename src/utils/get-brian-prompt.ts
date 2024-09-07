@@ -1,4 +1,4 @@
-import { UNISWAP_V3_SUBGRAPH_ID } from "consts"
+import { UNISWAP_V3_SUBGRAPH_ID } from 'consts';
 
 /**
  *
@@ -13,11 +13,11 @@ export const getBrianPrompt = (
   outputToken: string,
   outputNetwork: keyof typeof UNISWAP_V3_SUBGRAPH_ID,
   inputAmount: number,
-  inputToken: string = "ETH",
-  inputNetwork: keyof typeof UNISWAP_V3_SUBGRAPH_ID = "BASE"
+  inputToken: string = 'ETH',
+  inputNetwork: keyof typeof UNISWAP_V3_SUBGRAPH_ID = 'BASE',
 ) => {
-  if (inputNetwork===outputNetwork) {
-    return `Swap ${inputAmount} of ${inputToken} to ${outputToken} on ${inputNetwork}`
+  if (inputNetwork === outputNetwork) {
+    return `Swap ${inputAmount} of ${inputToken} to ${outputToken} on ${inputNetwork}`;
   }
-  return`Crosschain swap ${inputAmount} of ${inputToken} on ${inputNetwork} to ${outputToken} on ${outputNetwork}`
-}
+  return `Crosschain swap ${inputAmount} of ${inputToken} on ${inputNetwork} to ${outputToken} on ${outputNetwork}`;
+};

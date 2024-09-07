@@ -26,9 +26,6 @@ out/
 build/
 dist/
 
-# plasmo
-.plasmo
-
 # typescript
 .tsbuildinfo
 .env

@@ -1,3 +1,5 @@
+import { EXTENSION_BUTTON_CLICKED } from 'consts';
+
 import {
   COMMAND_BUS_REQUEST_MESSAGE,
   COMMAND_BUS_RESPONSE_MESSAGE,
@@ -40,6 +42,16 @@ const bridgeCommunication = () => {
       );
     },
   );
+
+  chrome.runtime.onMessage.addListener(async (request) => {
+    if (request.type === EXTENSION_BUTTON_CLICKED) {
+      const message = {
+        type: EXTENSION_BUTTON_CLICKED,
+      };
+      window.postMessage(message);
+      return;
+    }
+  });
 };
 
 injectScript();

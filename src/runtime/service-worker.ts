@@ -1,3 +1,4 @@
+import { EXTENSION_BUTTON_CLICKED } from 'consts';
 import { COMMAND_BUS_REQUEST_MESSAGE, COMMAND_MAP } from 'commands';
 
 chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
@@ -22,4 +23,12 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
   }
 
   return true;
+});
+
+chrome.action.onClicked.addListener((tab) => {
+  chrome.tabs
+    .sendMessage(tab?.id ?? 0, {
+      type: EXTENSION_BUTTON_CLICKED,
+    })
+    .catch(console.error);
 });

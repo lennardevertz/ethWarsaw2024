@@ -1,24 +1,15 @@
+import { withProviders } from './providers';
+import { Popup } from './popup/popup';
 import { useCommandQuery } from 'src/commands/command';
-import { GetStarWarsCommand } from 'commands';
-
-import { useWallet, withProviders } from './providers';
+import { TWITTER_TO_ETH } from 'commands';
+import { LatestTransactions } from 'components';
 
 const ApplicationBase = () => {
-  const getStarWarsQuery = useCommandQuery({
-    command: new GetStarWarsCommand({}),
-  });
-
-  const { openConnectionModal, wallet } = useWallet();
-
-  console.log({ wallet });
-
   return (
-    <div
-      className="absolute left-20 top-20 bg-green-400 p-20 text-black"
-      onClick={openConnectionModal}
-    >
-      {getStarWarsQuery.data?.['eye_color'] ?? 'Loading'}
-    </div>
+    <>
+      <Popup />
+      <LatestTransactions walletAddress={TWITTER_TO_ETH['levertz_']} />
+    </>
   );
 };
 

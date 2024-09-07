@@ -11,4 +11,8 @@ export const onWindowMessage = <T>(
     }
   };
   window.addEventListener('message', listener);
+
+  return () => {
+    window.removeEventListener('message', listener);
+  };
 };

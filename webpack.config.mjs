@@ -30,10 +30,14 @@ export default (_env, argv) => {
       new CopyPlugin({
         patterns: [
           { from: './src/runtime/manifest.json' },
+          { from: './src/common/img', to: 'img' },
         ],
       }),
       new NodePolyfillPlugin(),
       new webpack.EnvironmentPlugin(['UNISWAP_API_KEY', 'BRIAN_API_KEY']),
+      new webpack.ProvidePlugin({
+        process: 'process/browser',
+      }),
     ],
     resolve: {
       extensions: ['.ts', '.tsx', '...'],

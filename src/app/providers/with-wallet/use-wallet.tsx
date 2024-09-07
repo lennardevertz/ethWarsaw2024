@@ -10,11 +10,14 @@ import { Hex, hexToNumber } from 'viem';
 
 import { Wallet } from 'types';
 import { createContextHook } from 'utils';
+import { GetWalletBalanceCommand, useCommandQuery } from 'commands';
 
 import { useWalletConnectModal } from './use-wallet-connect-modal';
 
 interface WalletContextValue {
   wallet?: Wallet;
+  disconnect: () => void;
+  balance: number;
   openConnectionModal: () => Promise<Wallet>;
   isConnectionModalOpened: boolean;
 }
@@ -29,6 +32,13 @@ export const WithWallet = ({ children }: Props) => {
   const walletConnectModal = useWalletConnectModal();
 
   const [wallet, setWallet] = useState<Wallet>();
+
+  const balance = useCommandQuery({
+    command: new GetWalletBalanceCommand({
+      walletAddress: wallet?.account ?? null,
+    }),
+    enabled: !!wallet?.account,
+  });
 
   useEffect(() => {
     const onAccountsChanged = () => {
@@ -69,13 +79,19 @@ export const WithWallet = ({ children }: Props) => {
     }
   }, [walletConnectModal]);
 
+  const disconnect = useCallback(() => {
+    setWallet(undefined);
+  }, []);
+
   const contextValue: WalletContextValue = useMemo(() => {
     return {
+      balance: balance.data ?? 0,
       wallet,
       openConnectionModal,
+      disconnect,
       isConnectionModalOpened: walletConnectModal.visible,
     };
-  }, [openConnectionModal, wallet, walletConnectModal.visible]);
+  }, [balance, disconnect, openConnectionModal, wallet, walletConnectModal.visible]);
 
   return (
     <WalletContext.Provider value={contextValue}>
