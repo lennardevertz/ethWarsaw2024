@@ -14,3 +14,4 @@ export {
 export { onWindowMessage } from './on-window-message';
 export { CreatePaymentRequestCommand } from './create-payment-request';
 export { GetEnsAddressCommand } from './get-ens-address-command';
+export { GetSettingsCommand } from './get-settings';
