@@ -7,7 +7,7 @@ const UNISWAP_V3_SUBGRAPH_ID = {
   ARBITRUM: 'FbCGRftH4a3yZugY7TnbYgPJVEv2LvMT6oF1fxPe9aJM'
 } as const;
 
-const UNISWAP_V3_BASE_URL = `https://gateway.thegraph.com/api${process.env.PLASMO_PUBLIC_UNISWAP_API_KEY}`;
+const UNISWAP_V3_BASE_URL = `https://gateway.thegraph.com/api/${process.env.PLASMO_PUBLIC_UNISWAP_API_KEY}`;
 const TOKEN_LOGO_BASE_URL = `https://github.com/trustwallet/assets/tree/master/blockchains`;
 
 export const getUniswapV3GraphlUrl = (network: keyof typeof UNISWAP_V3_SUBGRAPH_ID) => {
