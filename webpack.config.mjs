@@ -34,6 +34,9 @@ export default (_env, argv) => {
       }),
       new NodePolyfillPlugin(),
       new webpack.EnvironmentPlugin(['UNISWAP_API_KEY', 'BRIAN_API_KEY']),
+      new webpack.ProvidePlugin({
+        process: 'process/browser',
+      }),
     ],
     resolve: {
       extensions: ['.ts', '.tsx', '...'],

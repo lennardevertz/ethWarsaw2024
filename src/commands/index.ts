@@ -13,4 +13,5 @@ export {
   Command,
 } from './command';
 export { onWindowMessage } from './on-window-message';
-export {ResolveEnsCommand} from './resolve-ens-command'
+export { ResolveEnsCommand } from './resolve-ens-command';
+export { CreatePaymentRequestCommand } from './create-payment-request';
