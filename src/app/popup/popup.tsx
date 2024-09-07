@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
+import { EXTENSION_BUTTON_CLICKED } from 'consts';
 
 import { onWindowMessage } from 'commands';
-import { EXTENSION_BUTTON_CLICKED } from 'consts';
 import { ModalBase } from 'components';
 
 import { useSubscriptions, useWallet } from '../providers';
