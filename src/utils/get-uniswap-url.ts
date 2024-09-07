@@ -1,4 +1,4 @@
-import { UNISWAP_V3_BASE_URL, UNISWAP_V3_SUBGRAPH_ID } from 'consts';
+import { UNISWAP_V3_BASE_URL, UNISWAP_V3_SUBGRAPH_ID } from 'commands';
 
 export const getUniswapV3GraphlUrl = (
   network: keyof typeof UNISWAP_V3_SUBGRAPH_ID,
