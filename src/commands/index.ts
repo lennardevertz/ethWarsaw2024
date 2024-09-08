@@ -26,3 +26,4 @@ export {
 } from './constants';
 export { GetWalletBalanceCommand } from './get-wallet-balance';
 export { GetSettingsCommand } from './get-settings';
+export type { BrianResponse } from './get-brian-response';

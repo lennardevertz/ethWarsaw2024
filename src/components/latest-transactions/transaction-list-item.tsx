@@ -1,12 +1,17 @@
 import moment, { duration } from 'moment';
+import { createWalletClient, custom } from 'viem';
+import { base } from 'viem/chains';
 
 import {
+  getBrianPrompt,
   getPurchasedToken,
   SUPPORTED_ICONS,
   TOKEN_SYMBOL_TO_ICON,
   type SupportedIcon,
 } from 'utils';
-import { SwapWithNetworkInfo } from 'commands';
+import { SwapWithNetworkInfo, useCommandMutation } from 'commands';
+import { GetBrianResponseCommand } from 'src/commands/get-brian-response';
+import { useWallet } from 'src/app/providers';
 
 import { ConfirmTransactionForm } from '../confirm-transaction-form';
 
@@ -23,6 +28,8 @@ export const TransactionListItem = ({
   className,
   onFormToggleClick,
 }: TransactionListItemProps) => {
+  const { wallet } = useWallet();
+
   const purchasedToken = getPurchasedToken(transaction);
 
   const timestamp = moment(Number(transaction.timestamp) * 1000);
@@ -35,6 +42,35 @@ export const TransactionListItem = ({
   const tokenIcon = SUPPORTED_ICONS.includes(tokenSymbol)
     ? TOKEN_SYMBOL_TO_ICON[tokenSymbol]
     : TOKEN_SYMBOL_TO_ICON.ETH;
+
+  const brianMutation = useCommandMutation(GetBrianResponseCommand);
+
+  const callBrian = async (amount: number) => {
+    if (!wallet) {
+      return;
+    }
+    const prompt = getBrianPrompt(
+      purchasedToken.purchaseToken.symbol,
+      transaction._network,
+      amount,
+    );
+    console.log('prompt 👌👌👌', prompt);
+    const brianResponse = await brianMutation.mutateAsync({
+      address: wallet.account,
+      prompt: prompt,
+    });
+    const walletClient = createWalletClient({
+      chain: base,
+      transport: custom(wallet?.provider),
+    });
+
+    walletClient.sendTransaction({
+      account: wallet.account,
+      to: brianResponse.result[0].data.steps[0].to,
+      value: brianResponse.result[0].data.steps[0].value,
+      data: brianResponse.result[0].data.steps[0].data,
+    });
+  };
 
   return (
     <li className={`flex w-full flex-col transition-opacity ${className}`}>
@@ -89,7 +125,9 @@ export const TransactionListItem = ({
           </button>
         </div>
       </div>
-      {isTransactionFormOpened && <ConfirmTransactionForm />}
+      {isTransactionFormOpened && (
+        <ConfirmTransactionForm onConfirmClicked={callBrian} />
+      )}
     </li>
   );
 };
