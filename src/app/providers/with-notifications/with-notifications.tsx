@@ -1,14 +1,26 @@
 import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
-import { getAddress } from 'viem';
+import {
+  createWalletClient,
+  custom,
+  getAddress,
+  Hex,
+  publicActions,
+} from 'viem';
+import { base } from 'viem/chains';
+import { useMutation } from '@tanstack/react-query';
 
 import {
   GetLatestTransactionsCommand,
-  Swap,
+  SubmitDegenModeTransactionCommand,
+  SwapWithNetworkInfo,
   useCommandMutation,
   useCommandQuery,
 } from 'commands';
+import { getBrianPrompt, getPurchasedToken } from 'utils';
+import { GetBrianResponseCommand } from 'src/commands/get-brian-response';
 
 import { useSubscriptions } from '../with-subscriptions';
+import { useWallet } from '../with-wallet';
 
 import { Notification } from './notification';
 
@@ -17,7 +29,7 @@ type Props = {
 };
 
 export const WithNotifications = ({ children }: Props) => {
-  const { subscriptions } = useSubscriptions();
+  const { subscriptions, isDegenModeActive } = useSubscriptions();
 
   const wallets = useMemo(() => {
     return subscriptions.map((sub) => {
@@ -69,7 +81,7 @@ export const WithNotifications = ({ children }: Props) => {
     return undefined;
   }, [latestTransactionsMutation, latestTransactionsQuery, wallets]);
 
-  const [newTransaction, setNewTransaction] = useState<Swap>();
+  const [newTransaction, setNewTransaction] = useState<SwapWithNetworkInfo>();
 
   useEffect(() => {
     if (newTransaction) {
@@ -77,7 +89,6 @@ export const WithNotifications = ({ children }: Props) => {
     }
     const interval = setInterval(() => {
       checkIfThereIsNewTransaction().then((maybeNewTransaction) => {
-        console.log({ maybeNewTransaction });
         if (maybeNewTransaction) {
           clearInterval(interval);
           setNewTransaction(maybeNewTransaction);
@@ -121,11 +132,82 @@ export const WithNotifications = ({ children }: Props) => {
     });
   }, []);
 
+  const { wallet, openConnectionModal } = useWallet();
+
+  const brianMutation = useCommandMutation(GetBrianResponseCommand);
+  const degenMutation = useCommandMutation(SubmitDegenModeTransactionCommand);
+  const sendTransactionMutation = useMutation({
+    mutationFn: async (props: { to: Hex; value: string; data: Hex }) => {
+      if (!wallet) {
+        return;
+      }
+
+      const walletClient = createWalletClient({
+        chain: base,
+        transport: custom(wallet?.provider),
+      }).extend(publicActions);
+
+      const tx = await walletClient.sendTransaction({
+        account: wallet.account,
+        to: props.to,
+        value: BigInt(props.value),
+        data: props.data,
+      });
+
+      await walletClient.waitForTransactionReceipt({ hash: tx });
+    },
+  });
+
+  const isLoading =
+    brianMutation.isPending ||
+    degenMutation.isPending ||
+    sendTransactionMutation.isPending;
+
+  const isSuccess =
+    degenMutation.isSuccess || sendTransactionMutation.isSuccess;
+
+  const callBrian = async (amount: number, swap: SwapWithNetworkInfo) => {
+    setIsBuying(false);
+    const resolvedWallet = wallet ?? (await openConnectionModal());
+    const purchasedToken = getPurchasedToken(swap);
+
+    const prompt = getBrianPrompt(
+      purchasedToken.purchaseToken.symbol,
+      swap._network,
+      amount,
+    );
+    console.log('prompt 👌👌👌', prompt);
+    const brianResponse = await brianMutation.mutateAsync({
+      address: isDegenModeActive
+        ? (process.env.DEGEN_MODE_ADDRESS as string)
+        : resolvedWallet.account,
+      prompt: prompt,
+    });
+
+    console.log('brianResponse', brianResponse);
+
+    if (isDegenModeActive) {
+      degenMutation.mutateAsync({
+        to: brianResponse.result[0].data.steps[0].to,
+        value: brianResponse.result[0].data.steps[0].value,
+        data: brianResponse.result[0].data.steps[0].data,
+      });
+    } else {
+      await sendTransactionMutation.mutateAsync({
+        to: brianResponse.result[0].data.steps[0].to,
+        value: brianResponse.result[0].data.steps[0].value,
+        data: brianResponse.result[0].data.steps[0].data,
+      });
+    }
+  };
+
   return (
     <>
       {children}
       {newTransaction && subscriptionOfNewTransaction && (
         <Notification
+          isLoading={isLoading}
+          isSuccess={isSuccess}
           swap={newTransaction}
           onClose={() => {
             setNewTransaction(undefined);
@@ -134,6 +216,9 @@ export const WithNotifications = ({ children }: Props) => {
           subscription={subscriptionOfNewTransaction}
           isBuying={isBuying}
           onToggleBuying={onToggleBuying}
+          onConfirmClicked={(v) => {
+            return callBrian(v, newTransaction);
+          }}
         />
       )}
     </>

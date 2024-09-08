@@ -1,8 +1,10 @@
 import moment, { duration } from 'moment';
-import { createWalletClient, custom } from 'viem';
+import { createWalletClient, custom, Hex, publicActions } from 'viem';
 import { base } from 'viem/chains';
+import { useMutation } from '@tanstack/react-query';
 
 import {
+  classes,
   getBrianPrompt,
   getPurchasedToken,
   SUPPORTED_ICONS,
@@ -18,6 +20,7 @@ import { GetBrianResponseCommand } from 'src/commands/get-brian-response';
 import { useSubscriptions, useWallet } from 'src/app/providers';
 
 import { ConfirmTransactionForm } from '../confirm-transaction-form';
+import { Spinner } from '../spinner';
 
 type TransactionListItemProps = {
   transaction: SwapWithNetworkInfo;
@@ -32,7 +35,7 @@ export const TransactionListItem = ({
   className,
   onFormToggleClick,
 }: TransactionListItemProps) => {
-  const { wallet } = useWallet();
+  const { wallet, openConnectionModal } = useWallet();
   const { isDegenModeActive } = useSubscriptions();
 
   const purchasedToken = getPurchasedToken(transaction);
@@ -50,11 +53,39 @@ export const TransactionListItem = ({
 
   const brianMutation = useCommandMutation(GetBrianResponseCommand);
   const degenMutation = useCommandMutation(SubmitDegenModeTransactionCommand);
+  const sendTransactionMutation = useMutation({
+    mutationFn: async (props: { to: Hex; value: string; data: Hex }) => {
+      if (!wallet) {
+        return;
+      }
+
+      const walletClient = createWalletClient({
+        chain: base,
+        transport: custom(wallet?.provider),
+      }).extend(publicActions);
+
+      const tx = await walletClient.sendTransaction({
+        account: wallet.account,
+        to: props.to,
+        value: BigInt(props.value),
+        data: props.data,
+      });
+
+      await walletClient.waitForTransactionReceipt({ hash: tx });
+    },
+  });
+
+  const isLoading =
+    brianMutation.isPending ||
+    degenMutation.isPending ||
+    sendTransactionMutation.isPending;
+
+  const isSuccess =
+    degenMutation.isSuccess || sendTransactionMutation.isSuccess;
 
   const callBrian = async (amount: number) => {
-    if (!wallet) {
-      return;
-    }
+    const resolvedWallet = wallet ?? (await openConnectionModal());
+    onFormToggleClick(transaction.id);
     const prompt = getBrianPrompt(
       purchasedToken.purchaseToken.symbol,
       transaction._network,
@@ -64,28 +95,22 @@ export const TransactionListItem = ({
     const brianResponse = await brianMutation.mutateAsync({
       address: isDegenModeActive
         ? (process.env.DEGEN_MODE_ADDRESS as string)
-        : wallet.account,
+        : resolvedWallet.account,
       prompt: prompt,
     });
 
     console.log('brianResponse', brianResponse);
 
     if (isDegenModeActive) {
-      degenMutation.mutateAsync({
+      await degenMutation.mutateAsync({
         to: brianResponse.result[0].data.steps[0].to,
         value: brianResponse.result[0].data.steps[0].value,
         data: brianResponse.result[0].data.steps[0].data,
       });
     } else {
-      const walletClient = createWalletClient({
-        chain: base,
-        transport: custom(wallet?.provider),
-      });
-
-      walletClient.sendTransaction({
-        account: wallet.account,
+      await sendTransactionMutation.mutateAsync({
         to: brianResponse.result[0].data.steps[0].to,
-        value: BigInt(brianResponse.result[0].data.steps[0].value),
+        value: brianResponse.result[0].data.steps[0].value,
         data: brianResponse.result[0].data.steps[0].data,
       });
     }
@@ -133,14 +158,27 @@ export const TransactionListItem = ({
         </div>
         <div className="flex items-center">
           <button
+            disabled={isLoading}
             onClick={() => {
               return isTransactionFormOpened
                 ? onFormToggleClick(undefined)
                 : onFormToggleClick(transaction.id);
             }}
-            className={`${!isTransactionFormOpened ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-400 hover:bg-gray-500'} rounded-lg px-4 py-2 text-xs font-bold text-white shadow-lg`}
+            className={`${!isTransactionFormOpened ? 'relative bg-green-600 hover:bg-green-700' : 'bg-gray-400 hover:bg-gray-500'} relative rounded-lg px-4 py-2 text-xs font-bold text-white shadow-lg`}
           >
-            {isTransactionFormOpened ? 'Close' : 'Buy'}
+            <Spinner
+              className={classes(
+                'absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2',
+                !isLoading && 'invisible',
+              )}
+            />
+            <span className={classes(isLoading && 'invisible')}>
+              {isSuccess
+                ? 'Success'
+                : isTransactionFormOpened && !isSuccess
+                  ? 'Close'
+                  : 'Buy'}
+            </span>
           </button>
         </div>
       </div>
