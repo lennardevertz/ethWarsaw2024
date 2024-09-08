@@ -24,7 +24,6 @@ export class GetWalletBalanceCommand extends Command<Payload, any> {
 
     const value = await publicClient.getBalance({
       address: this.payload.walletAddress,
-      // address: '0x4a3755eB99ae8b22AaFB8f16F0C51CF68Eb60b85',
     });
 
     return Number(formatEther(value));

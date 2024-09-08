@@ -27,3 +27,4 @@ export {
 export { GetWalletBalanceCommand } from './get-wallet-balance';
 export { GetSettingsCommand } from './get-settings';
 export { GetAddressesEnsesCommand } from './get-addresses-enses-command';
+export type { BrianResponse } from './get-brian-response';
