@@ -17,7 +17,14 @@ export const TWITTER_TO_ETH = {
   dwr: '0xD7029BDEa1c17493893AAfE29AAD69EF892B8ff2',
   geoist_: '0xcCE9A28b570946123f392Cf1DbfA6D2D5e636a1f',
   levertz_: '0x4a3755eB99ae8b22AaFB8f16F0C51CF68Eb60b85',
-};
+} as const;
+
+export const WARPCAST_TO_ETH = {
+  'vitalik.eth': '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045',
+  'dwr': '0xD7029BDEa1c17493893AAfE29AAD69EF892B8ff2',
+  'geoist': '0xcCE9A28b570946123f392Cf1DbfA6D2D5e636a1f',
+  'levertz': '0x4a3755eB99ae8b22AaFB8f16F0C51CF68Eb60b85',
+} as const;
 
 export const FILTERED_OUT_COINS = ['USDC', 'ETH', 'USDT', 'WETH', 'DAI'];
 
