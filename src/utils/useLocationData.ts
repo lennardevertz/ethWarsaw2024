@@ -9,14 +9,14 @@ export const useLocationData = () => {
   const isWarpcast = host === 'warpcast.com';
 
   if (isTwitter && pathname !== '/home') {
-    const userHandle = pathname?.slice(1);
+    const userHandle = pathname?.slice(1).toLowerCase();
     const walletAddress =
       TWITTER_TO_ETH[userHandle as keyof typeof TWITTER_TO_ETH];
     return { walletAddressFromUserHandle: walletAddress ?? null };
   }
 
   if (isWarpcast && pathname !== '/') {
-    const userHandle = pathname?.slice(1);
+    const userHandle = pathname?.slice(1).toLowerCase();
     const walletAddress =
       WARPCAST_TO_ETH[userHandle as keyof typeof WARPCAST_TO_ETH];
 

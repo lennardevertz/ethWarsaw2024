@@ -15,6 +15,7 @@ import { useSubscriptions, useWallet } from '../providers';
 
 import { SubscriptionForm } from './subscription-form';
 import { SubscriptionsList } from './subscriptions-list';
+import { PopupSettings } from './popup-settings';
 
 export const Popup = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -107,6 +108,7 @@ export const Popup = () => {
         subscriptions={subscriptions}
         onRemove={handleRemoveSubscription}
       />
+      <PopupSettings />
     </ModalBase>
   );
 };
