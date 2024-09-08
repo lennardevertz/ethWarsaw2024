@@ -17,7 +17,7 @@ export const getBrianPrompt = (
   inputNetwork: keyof typeof UNISWAP_V3_SUBGRAPH_ID = 'BASE',
 ) => {
   if (inputNetwork === outputNetwork) {
-    return `Swap ${inputAmount} of ${inputToken} to ${outputToken} on ${inputNetwork}`;
+    return `Swap ${inputAmount} ${inputToken} to ${outputToken} on ${inputNetwork}`;
   }
-  return `Crosschain swap ${inputAmount} of ${inputToken} on ${inputNetwork} to ${outputToken} on ${outputNetwork}`;
+  return `Crosschain swap ${inputAmount} ${inputToken} on ${inputNetwork} to ${outputToken} on ${outputNetwork}`;
 };

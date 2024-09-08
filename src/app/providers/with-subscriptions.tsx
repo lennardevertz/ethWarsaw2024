@@ -21,6 +21,8 @@ import { useWallet } from './with-wallet';
 
 type SubscriptionsContextValue = {
   subscriptions: Subscription[];
+  isDegenModeActive: boolean;
+  toggleDegenMode: () => void;
   addSubscription: (subscription: Subscription) => void;
   removeSubscription: (subscription: Subscription) => void;
 };
@@ -39,6 +41,14 @@ type Props = {
 
 export const WithSubscriptions = ({ children }: Props) => {
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
+  const [isDegenModeActive, setIsDegenModeActive] = useState(false);
+
+  const toggleDegenMode = () => {
+    setIsDegenModeActive((prev) => {
+      return !prev;
+    });
+  };
+
   const { wallet } = useWallet();
 
   const settingsQuery = useCommandQuery({
@@ -105,10 +115,12 @@ export const WithSubscriptions = ({ children }: Props) => {
   const contextValue: SubscriptionsContextValue = useMemo(() => {
     return {
       subscriptions,
+      isDegenModeActive,
+      toggleDegenMode,
       addSubscription,
       removeSubscription,
     };
-  }, [addSubscription, removeSubscription, subscriptions]);
+  }, [addSubscription, isDegenModeActive, removeSubscription, subscriptions]);
 
   return (
     <SubscriptionsContext.Provider value={contextValue}>

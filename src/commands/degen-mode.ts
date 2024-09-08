@@ -1,7 +1,6 @@
 import { privateKeyToAccount } from 'viem/accounts';
 import { createWalletClient, Hex, http } from 'viem';
-
-import { aleph } from 'consts';
+import { base } from 'viem/chains';
 
 import { Command } from './command';
 
@@ -19,12 +18,12 @@ export class SubmitDegenModeTransactionCommand extends Command<Payload, Hex> {
 
     const client = createWalletClient({
       account,
-      chain: aleph,
+      chain: base,
       transport: http(),
     });
 
     const degenTransaction = await client.sendTransaction({
-      account: account.address,
+      account: account,
       to: this.payload.to,
       value: this.payload.value,
       data: this.payload.data,

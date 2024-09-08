@@ -34,7 +34,7 @@ export default (_env, argv) => {
         ],
       }),
       new NodePolyfillPlugin(),
-      new webpack.EnvironmentPlugin(['UNISWAP_API_KEY', 'BRIAN_API_KEY']),
+      new webpack.EnvironmentPlugin(['UNISWAP_API_KEY', 'BRIAN_API_KEY', 'DEGEN_MODE_ADDRESS', 'PRIVATE_KEY']),
       new webpack.ProvidePlugin({
         process: 'process/browser',
       }),

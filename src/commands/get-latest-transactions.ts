@@ -57,8 +57,11 @@ export class GetLatestTransactionsCommand extends Command<Payload, any> {
           return v;
         })
         .filter((v) => {
-          return !FILTERED_OUT_COINS.includes(
-            getPurchasedToken(v).purchaseToken.symbol,
+          return (
+            v &&
+            !FILTERED_OUT_COINS.includes(
+              getPurchasedToken(v).purchaseToken.symbol,
+            )
           );
         })
         .sort((a, b) => {
