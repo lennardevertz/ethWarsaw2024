@@ -85,7 +85,7 @@ export const TransactionListItem = ({
       walletClient.sendTransaction({
         account: wallet.account,
         to: brianResponse.result[0].data.steps[0].to,
-        value: brianResponse.result[0].data.steps[0].value,
+        value: BigInt(brianResponse.result[0].data.steps[0].value),
         data: brianResponse.result[0].data.steps[0].data,
       });
     }
