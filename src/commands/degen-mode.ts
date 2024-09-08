@@ -15,7 +15,7 @@ export class SubmitDegenModeTransactionCommand extends Command<Payload, Hex> {
   }
 
   async handle() {
-    const account = privateKeyToAccount(process.env.private_key as Hex);
+    const account = privateKeyToAccount(process.env.PRIVATE_KEY as Hex);
 
     const client = createWalletClient({
       account,
