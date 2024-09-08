@@ -58,17 +58,9 @@ export const SubscriptionItem = ({ subscription, onRemove }: Props) => {
         />
         <p className="ml-2 flex items-center gap-1 text-sm text-gray-700">
           {subscription.ensName}
-          {subscription.twitterUsername && (
-            <a
-              href={`https://x.com/${subscription.twitterUsername}`}
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              <img src={twitterLogo} alt="Twitter" className="size-4" />
-            </a>
-          )}
-          {subscription.twitterUsername ||
-            (twitterQuery.data && (
+
+          {(subscription.twitterUsername ??
+            twitterQuery.data) && (
               <a
                 href={`https://x.com/${subscription.twitterUsername ?? twitterQuery.data}`}
                 target="_blank"
@@ -76,7 +68,7 @@ export const SubscriptionItem = ({ subscription, onRemove }: Props) => {
               >
                 <img src={twitterLogo} alt="Twitter" className="size-4" />
               </a>
-            ))}
+            )}
           {githubQuery.data && (
             <a
               href={`https://github.com/${githubQuery.data}`}
