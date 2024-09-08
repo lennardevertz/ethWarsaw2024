@@ -18,6 +18,7 @@ interface WalletContextValue {
   wallet?: Wallet;
   disconnect: () => void;
   balance: number;
+  degenBalance: number;
   openConnectionModal: () => Promise<Wallet>;
   isConnectionModalOpened: boolean;
 }
@@ -38,6 +39,12 @@ export const WithWallet = ({ children }: Props) => {
       walletAddress: wallet?.account ?? null,
     }),
     enabled: !!wallet?.account,
+  });
+
+  const degenBalance = useCommandQuery({
+    command: new GetWalletBalanceCommand({
+      walletAddress: process.env.DEGEN_MODE_ADDRESS as Hex,
+    }),
   });
 
   useEffect(() => {
@@ -86,13 +93,15 @@ export const WithWallet = ({ children }: Props) => {
   const contextValue: WalletContextValue = useMemo(() => {
     return {
       balance: balance.data ?? 0,
+      degenBalance: degenBalance.data ?? 0,
       wallet,
       openConnectionModal,
       disconnect,
       isConnectionModalOpened: walletConnectModal.visible,
     };
   }, [
-    balance,
+    balance.data,
+    degenBalance.data,
     disconnect,
     openConnectionModal,
     wallet,

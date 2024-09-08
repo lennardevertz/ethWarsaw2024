@@ -9,9 +9,13 @@ import {
   TOKEN_SYMBOL_TO_ICON,
   type SupportedIcon,
 } from 'utils';
-import { SwapWithNetworkInfo, useCommandMutation } from 'commands';
+import {
+  SubmitDegenModeTransactionCommand,
+  SwapWithNetworkInfo,
+  useCommandMutation,
+} from 'commands';
 import { GetBrianResponseCommand } from 'src/commands/get-brian-response';
-import { useWallet } from 'src/app/providers';
+import { useSubscriptions, useWallet } from 'src/app/providers';
 
 import { ConfirmTransactionForm } from '../confirm-transaction-form';
 
@@ -29,6 +33,7 @@ export const TransactionListItem = ({
   onFormToggleClick,
 }: TransactionListItemProps) => {
   const { wallet } = useWallet();
+  const { isDegenModeActive } = useSubscriptions();
 
   const purchasedToken = getPurchasedToken(transaction);
 
@@ -44,6 +49,7 @@ export const TransactionListItem = ({
     : TOKEN_SYMBOL_TO_ICON.ETH;
 
   const brianMutation = useCommandMutation(GetBrianResponseCommand);
+  const degenMutation = useCommandMutation(SubmitDegenModeTransactionCommand);
 
   const callBrian = async (amount: number) => {
     if (!wallet) {
@@ -56,20 +62,31 @@ export const TransactionListItem = ({
     );
     console.log('prompt 👌👌👌', prompt);
     const brianResponse = await brianMutation.mutateAsync({
-      address: wallet.account,
+      address: isDegenModeActive
+        ? (process.env.DEGEN_MODE_ADDRESS as string)
+        : wallet.account,
       prompt: prompt,
     });
-    const walletClient = createWalletClient({
-      chain: base,
-      transport: custom(wallet?.provider),
-    });
 
-    walletClient.sendTransaction({
-      account: wallet.account,
-      to: brianResponse.result[0].data.steps[0].to,
-      value: brianResponse.result[0].data.steps[0].value,
-      data: brianResponse.result[0].data.steps[0].data,
-    });
+    if (isDegenModeActive) {
+      degenMutation.mutateAsync({
+        to: brianResponse.result[0].data.steps[0].to,
+        value: brianResponse.result[0].data.steps[0].value,
+        data: brianResponse.result[0].data.steps[0].data,
+      });
+    } else {
+      const walletClient = createWalletClient({
+        chain: base,
+        transport: custom(wallet?.provider),
+      });
+
+      walletClient.sendTransaction({
+        account: wallet.account,
+        to: brianResponse.result[0].data.steps[0].to,
+        value: brianResponse.result[0].data.steps[0].value,
+        data: brianResponse.result[0].data.steps[0].data,
+      });
+    }
   };
 
   return (

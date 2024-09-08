@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { useWallet } from '../app/providers';
+import { useSubscriptions, useWallet } from '../app/providers';
 
 type ConfirmTransactionFormProps = {
   onConfirmClicked: (amount: number) => void;
@@ -9,10 +9,11 @@ type ConfirmTransactionFormProps = {
 export const ConfirmTransactionForm = ({
   onConfirmClicked,
 }: ConfirmTransactionFormProps) => {
-  const { balance } = useWallet();
+  const { balance, degenBalance } = useWallet();
+  const { isDegenModeActive } = useSubscriptions();
 
   const [balancePercentage, setBalancePercentage] = useState(10);
-  const currentETHBalance = balance;
+  const currentETHBalance = isDegenModeActive ? degenBalance : balance;
 
   const totalValue = Number((currentETHBalance * balancePercentage) / 100);
 
@@ -26,7 +27,7 @@ export const ConfirmTransactionForm = ({
           How much?
         </label>
         <p className="text-sm text-gray-600">
-          Balance:{' '}
+          {isDegenModeActive ? 'Degen' : ''} Balance:{' '}
           <span className="font-medium">
             {Number(currentETHBalance).toPrecision(4)} ETH{' '}
           </span>

@@ -10,7 +10,6 @@ import { generatePrivateKey, privateKeyToAccount } from 'viem/accounts';
 import { Command } from './command';
 
 type Payload = {
-  address: Hex;
   payer: Hex;
   recipient: Hex;
   amount: string;
@@ -86,9 +85,9 @@ export class CreatePaymentRequestCommand extends Command<Payload, any> {
 
       // The contentData can contain anything.
       contentData: {
-        note: ':rocket::tophat::money_with_wings:',
+        note: '🚀🎩💸',
         creationDate: '2024.09.07',
-        invoiceNumber: '1',
+        invoiceNumber: '69',
         paymentTerms: {
           dueDate: '2024.12.31',
         },

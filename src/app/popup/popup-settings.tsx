@@ -1,7 +1,35 @@
-import { useSubscriptions } from '../providers';
+import { Hex } from 'viem';
+import { useEffect } from 'react';
+
+import { CreatePaymentRequestCommand, useCommandMutation } from 'commands';
+
+import { useSubscriptions, useWallet } from '../providers';
 
 export const PopupSettings = () => {
   const { isDegenModeActive, toggleDegenMode } = useSubscriptions();
+  const { degenBalance, wallet } = useWallet();
+
+  const degenRequestMutation = useCommandMutation(CreatePaymentRequestCommand);
+
+  const degenCharge = () => {
+    degenRequestMutation.mutateAsync({
+      amount: '0.001',
+      payer: wallet?.account as Hex,
+      recipient: process.env.DEGEN_MODE_ADDRESS as Hex,
+    });
+  };
+
+  useEffect(() => {
+    if (degenRequestMutation.isSuccess) {
+      const link = document.createElement('a');
+      link.href = 'https://invoicing.request.network/';
+      link.target = '_blank';
+      link.rel = 'noreferrer';
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    }
+  }, [degenRequestMutation.isSuccess]);
 
   return (
     <>
@@ -53,23 +81,31 @@ export const PopupSettings = () => {
           className="mt-1 flex items-center justify-start"
         >
           <p className="text-sm text-gray-900">
-            Degen balance: <span>123 ETH</span>
+            Degen balance:
+            <span> {Number(degenBalance).toPrecision(4)} ETH</span>
           </p>
-          <button className="ml-2 rounded-full bg-green-600 p-2 font-black text-white shadow-lg hover:bg-green-700">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="size-2 font-black"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="6"
-                d="M12 4v16m8-8H4"
-              />
-            </svg>
+          <button
+            onClick={degenCharge}
+            className="ml-2 rounded-full bg-green-600 p-2 font-black text-white shadow-lg hover:bg-green-700"
+          >
+            {degenRequestMutation.isPending ? (
+              <svg className="mr-3 size-5 animate-spin" viewBox="0 0 24 24" />
+            ) : (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="size-2 font-black"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="6"
+                  d="M12 4v16m8-8H4"
+                />
+              </svg>
+            )}
           </button>
         </div>
       )}
