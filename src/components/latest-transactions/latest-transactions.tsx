@@ -27,6 +27,8 @@ export const LatestTransactions = ({
     return null;
   }
 
+  console.log('transactionsData', transactionsData);
+
   return (
     <div className="absolute right-10 top-20 w-96 max-w-lg rounded-lg border-l-4 border-gray-400 bg-gray-200 px-4 py-2">
       <ul role="list" className="divide-y divide-gray-100">

@@ -68,6 +68,8 @@ export const TransactionListItem = ({
       prompt: prompt,
     });
 
+    console.log('brianResponse', brianResponse);
+
     if (isDegenModeActive) {
       degenMutation.mutateAsync({
         to: brianResponse.result[0].data.steps[0].to,
