@@ -1,6 +1,12 @@
 import { defineChain } from 'viem';
 
-import { dwrAvatar, geoistAvatar, levertzAvatar, vitalikAvatar } from 'images';
+import {
+  dwrAvatar,
+  geoistAvatar,
+  jessiePollakAvatar,
+  levertzAvatar,
+  vitalikAvatar,
+} from 'images';
 
 export const COMMAND_BUS_REQUEST_MESSAGE = 'COMMAND_BUS_REQUEST_MESSAGE';
 export const COMMAND_BUS_RESPONSE_MESSAGE = 'COMMAND_BUS_RESPONSE_MESSAGE';
@@ -47,6 +53,8 @@ export const ENS_TO_AVATAR: Record<string, string> = {
   'levertz.eth': levertzAvatar,
   'dwr.eth': dwrAvatar,
   'vitalik.eth': vitalikAvatar,
+  'jesse.xyz': jessiePollakAvatar,
+  'jessepollak.eth': jessiePollakAvatar,
 };
 
 export const FILTERED_OUT_COINS = ['USDC', 'ETH', 'USDT', 'WETH', 'DAI'];
