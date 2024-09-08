@@ -5,7 +5,7 @@
   </a>
   <h3 align="center">Crypto Trading Copilot</h3>
   <p align="center">
-Supercharging your browsing experience with actionable trading insights
+We're making it easier for users to track and replicate trades made by their favorite traders across platforms like Twitter and Farcaster
   </p>
 </div>
 
