@@ -6,10 +6,18 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { useLocalStorage } from 'react-use';
+import { Hex } from 'viem';
 
+import {
+  GetAddressesEnsesCommand,
+  GetSettingsCommand,
+  useCommandQuery,
+} from 'commands';
 import { Subscription } from 'types';
 import { createContextHook } from 'utils';
+import { ENS_TO_AVATAR, ENS_TO_FARCASTER, ENS_TO_TWITTER } from 'consts';
+
+import { useWallet } from './with-wallet';
 
 type SubscriptionsContextValue = {
   subscriptions: Subscription[];
@@ -30,12 +38,39 @@ type Props = {
 };
 
 export const WithSubscriptions = ({ children }: Props) => {
-  const [storedSubscriptions, setStoredSubscriptions] = useLocalStorage<
-    Subscription[]
-  >('subscriptions', []);
-  const [subscriptions, setSubscriptions] = useState<Subscription[]>(
-    storedSubscriptions ?? [],
-  );
+  const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
+  const { wallet } = useWallet();
+
+  const settingsQuery = useCommandQuery({
+    command: new GetSettingsCommand({
+      address: wallet?.account ?? '0x',
+    }),
+    enabled: Boolean(wallet?.account),
+  });
+
+  const storedEnsesQuery = useCommandQuery({
+    command: new GetAddressesEnsesCommand({
+      addresses: settingsQuery.data ?? [],
+    }),
+    enabled: settingsQuery.data && settingsQuery.data.length > 0,
+  });
+
+  useEffect(() => {
+    if (storedEnsesQuery.data) {
+      const subscriptionsResult = Object.entries(storedEnsesQuery.data).map(
+        ([walletAddress, ensName]) => {
+          return {
+            ensName,
+            walletAddress: walletAddress as Hex,
+            avatarSrc: ENS_TO_AVATAR[ensName],
+            twitterUsername: ENS_TO_TWITTER[ensName],
+            farcasterUsername: ENS_TO_FARCASTER[ensName],
+          };
+        },
+      );
+      setSubscriptions(subscriptionsResult);
+    }
+  }, [settingsQuery.data, storedEnsesQuery]);
 
   const addSubscription = useCallback(
     (newSubscriptionCandidate: Subscription) => {
@@ -50,8 +85,9 @@ export const WithSubscriptions = ({ children }: Props) => {
 
         return [...previousSubscriptions, newSubscriptionCandidate];
       });
+      settingsQuery.refetch();
     },
-    [],
+    [settingsQuery],
   );
 
   const removeSubscription = useCallback(
@@ -61,13 +97,10 @@ export const WithSubscriptions = ({ children }: Props) => {
           return subscription.ensName !== subscriptionToBeRemoved.ensName;
         });
       });
+      settingsQuery.refetch();
     },
-    [],
+    [settingsQuery],
   );
-
-  useEffect(() => {
-    setStoredSubscriptions(subscriptions);
-  }, [setStoredSubscriptions, subscriptions]);
 
   const contextValue: SubscriptionsContextValue = useMemo(() => {
     return {
