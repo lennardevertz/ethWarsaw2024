@@ -6,6 +6,7 @@ import { WithQueryClient } from './with-query-client';
 import { WithTailwind } from './with-tailwind';
 import { WithWallet } from './with-wallet/use-wallet';
 import { WithSubscriptions } from './with-subscriptions';
+import { WithNotifications } from './with-notifications';
 
 export const withProviders = (Component: ComponentType): FC => {
   function ComponentWithProviders() {
@@ -16,7 +17,9 @@ export const withProviders = (Component: ComponentType): FC => {
             <WithNiceModal>
               <WithWallet>
                 <WithSubscriptions>
-                  <Component />
+                  <WithNotifications>
+                    <Component />
+                  </WithNotifications>
                 </WithSubscriptions>
               </WithWallet>
             </WithNiceModal>

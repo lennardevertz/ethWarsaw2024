@@ -1,7 +1,10 @@
 import { useState } from 'react';
 
-import { SwapWithNetworkInfo, useCommandQuery } from 'commands';
-import { GetLatestTransactionsCommand } from 'src/commands/get-latest-transactions';
+import {
+  SwapWithNetworkInfo,
+  useCommandQuery,
+  GetLatestTransactionsCommand,
+} from 'commands';
 
 import { TransactionListItem } from './transaction-list-item';
 
@@ -16,7 +19,10 @@ export const LatestTransactions = ({
     useState<string>();
 
   const transactions = useCommandQuery({
-    command: new GetLatestTransactionsCommand({ addresses: [walletAddress] }),
+    command: new GetLatestTransactionsCommand({
+      addresses: [walletAddress],
+      slice: 3,
+    }),
   });
 
   const transactionsData = transactions.data as

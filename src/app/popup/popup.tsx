@@ -8,7 +8,7 @@ import {
   SETTINGS_ABI,
   SETTINGS_ADDRESS,
 } from 'consts';
-import { ModalBase } from 'components';
+import { IconButton, ModalBase } from 'components';
 import { Subscription } from 'types';
 
 import { useSubscriptions, useWallet } from '../providers';
@@ -20,8 +20,7 @@ import { PopupSettings } from './popup-settings';
 export const Popup = () => {
   const [isVisible, setIsVisible] = useState(false);
   const { wallet, openConnectionModal } = useWallet();
-  const { subscriptions, removeSubscription, addSubscription } =
-    useSubscriptions();
+  const { subscriptions, refetch } = useSubscriptions();
 
   const toggleVisibility = useCallback(() => {
     if (!isVisible && !wallet) {
@@ -65,9 +64,9 @@ export const Popup = () => {
       });
 
       await walletClient.waitForTransactionReceipt({ hash: transactionHash });
-      addSubscription(subscription);
+      refetch();
     },
-    [addSubscription, wallet, walletClient],
+    [refetch, wallet, walletClient],
   );
 
   const handleRemoveSubscription = useCallback(
@@ -88,9 +87,9 @@ export const Popup = () => {
       });
 
       await walletClient.waitForTransactionReceipt({ hash: transactionHash });
-      removeSubscription(subscription);
+      refetch();
     },
-    [removeSubscription, wallet, walletClient],
+    [refetch, wallet, walletClient],
   );
 
   if (!wallet) {
@@ -102,6 +101,15 @@ export const Popup = () => {
       className="fixed left-4 top-4 w-80 rounded-lg border-l-4 border-blue-500 bg-blue-100 p-4 text-black shadow-lg"
       isOpened={isVisible}
     >
+      <IconButton
+        iconName="Cross1Icon"
+        className="absolute right-2 top-2 text-gray-700"
+        iconSize={12}
+        onClick={() => {
+          setIsVisible(false);
+        }}
+      />
+
       <SubscriptionForm onSubmit={handleAddNewSubscription} />
       <SubscriptionsList
         className="mt-4"

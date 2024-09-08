@@ -84,6 +84,7 @@ interface CommandQueryProperties<Payload, Response, MappedResponse = Response> {
   enabled?: boolean;
   staleTime?: number;
   placeholderData?: (previousData?: Response) => Response | undefined;
+  queryKey?: string;
 }
 
 export const useCommandQuery = <
@@ -99,6 +100,7 @@ export const useCommandQuery = <
   refetchInterval,
   placeholderData,
   enabled = true,
+  queryKey,
 }: CommandQueryProperties<Parameters, ExpectedResponse, MappedResponse>) => {
   const queryFunction = useCallback(() => {
     return command.send();
@@ -106,7 +108,7 @@ export const useCommandQuery = <
 
   const queryOptions = useMemo(() => {
     return {
-      queryKey: [command.name, JSON.stringify(command.payload)],
+      queryKey: queryKey? [queryKey] : [command.name, JSON.stringify(command.payload)],
       refetchInterval,
       retry,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

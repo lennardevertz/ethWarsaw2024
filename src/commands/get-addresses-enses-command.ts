@@ -20,7 +20,7 @@ export class GetAddressesEnsesCommand extends Command<
 
   async handle() {
     const client = createPublicClient({
-      chain: { ...mainnet, fees: undefined },
+      chain: mainnet,
       transport: http(),
     });
 

@@ -7,10 +7,13 @@ import {
   SwapWithNetworkInfo,
 } from './get-latest-transactions.types';
 
-type Payload = { addresses: string[] };
+type Payload = { addresses: string[]; slice: number };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export class GetLatestTransactionsCommand extends Command<Payload, any> {
+export class GetLatestTransactionsCommand extends Command<
+  Payload,
+  SwapWithNetworkInfo[]
+> {
   public readonly name = 'GetLatestTransactionsCommand' as const;
 
   constructor(public payload: Payload) {
@@ -67,7 +70,7 @@ export class GetLatestTransactionsCommand extends Command<Payload, any> {
         .sort((a, b) => {
           return Number(b.timestamp) - Number(a.timestamp);
         })
-        .slice(0, 3);
+        .slice(0, this.payload.slice);
     } catch (err) {
       console.error('❌', err);
       return [];
