@@ -27,6 +27,10 @@ export {
 export { GetWalletBalanceCommand } from './get-wallet-balance';
 export { GetSettingsCommand } from './get-settings';
 export { GetAddressesEnsesCommand } from './get-addresses-enses-command';
+export { GetEnsEmailCommand } from './get-email-ens-command';
+export { GetEnsDiscordCommand } from './get-discord-ens-command';
+export { GetEnsTwitterCommand } from './get-twitter-ens-command';
+export { GetEnsGithubCommand } from './get-github-ens-command';
 export { SubmitDegenModeTransactionCommand } from './degen-mode';
 export type { BrianResponse } from './get-brian-response';
 export { GetLatestTransactionsCommand } from './get-latest-transactions';
