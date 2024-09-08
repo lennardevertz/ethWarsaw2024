@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { CreatePaymentRequestCommand, useCommandMutation } from 'commands';
 
 import { useSubscriptions, useWallet } from '../providers';
+import { Spinner } from 'components';
 
 export const PopupSettings = () => {
   const { isDegenModeActive, toggleDegenMode } = useSubscriptions();
@@ -89,7 +90,7 @@ export const PopupSettings = () => {
             className="ml-2 rounded-full bg-green-600 p-2 font-black text-white shadow-lg hover:bg-green-700"
           >
             {degenRequestMutation.isPending ? (
-              <svg className="mr-3 size-5 animate-spin" viewBox="0 0 24 24" />
+                  <Spinner />
             ) : (
               <svg
                 xmlns="http://www.w3.org/2000/svg"

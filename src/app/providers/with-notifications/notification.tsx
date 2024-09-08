@@ -5,9 +5,10 @@ import { Swap } from 'commands';
 import { twitterLogo, warpcastLogo } from 'images';
 import { Subscription } from 'types';
 import { classes, getPurchasedToken } from 'utils';
-import { IconButton } from 'components';
+import { IconButton, Spinner } from 'components';
 
 import { useWallet } from '../with-wallet';
+import { useSubscriptions } from '../with-subscriptions';
 
 type Props = {
   subscription: Subscription;
@@ -15,19 +16,26 @@ type Props = {
   isBuying: boolean;
   onToggleBuying: () => void;
   onClose: () => void;
+  onConfirmClicked: (amount: number) => void;
+  isLoading: boolean;
+  isSuccess: boolean;
 };
 
 export const Notification = ({
   swap,
   subscription,
   isBuying,
+  isLoading,
+  isSuccess,
   onClose,
   onToggleBuying,
+  onConfirmClicked,
 }: Props) => {
-  const { balance } = useWallet();
+  const { balance, degenBalance } = useWallet();
+  const { isDegenModeActive } = useSubscriptions();
   const [balancePercentage, setBalancePercentage] = useState(10);
   const { purchaseToken, purchaseAmount } = getPurchasedToken(swap);
-  const currentETHBalance = balance;
+  const currentETHBalance = isDegenModeActive ? degenBalance : balance;
   const totalValue = Number((currentETHBalance * balancePercentage) / 100);
 
   const timestamp = moment(Number(swap.timestamp) * 1000);
@@ -77,10 +85,23 @@ export const Notification = ({
           </div>
           <div className="flex items-center">
             <button
+              disabled={isLoading}
               onClick={onToggleBuying}
-              className={`${!isBuying ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-400 hover:bg-gray-500'} rounded-lg px-4 py-2 text-xs font-bold text-white shadow-lg`}
+              className={`${!isBuying ? 'relative bg-green-600 hover:bg-green-700' : 'bg-gray-400 hover:bg-gray-500'} relative rounded-lg px-4 py-2 text-xs font-bold text-white shadow-lg`}
             >
-              {isBuying ? 'Close' : 'Buy'}
+              <Spinner
+                className={classes(
+                  'absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2',
+                  !isLoading && 'invisible',
+                )}
+              />
+              <span className={classes(isLoading && 'invisible')}>
+                {isSuccess
+                  ? 'Success'
+                  : isBuying && !isSuccess
+                    ? 'Close'
+                    : 'Buy'}
+              </span>
             </button>
           </div>
         </div>
@@ -89,7 +110,7 @@ export const Notification = ({
             <div className="flex justify-between">
               <label
                 htmlFor="percentageTemplate"
-                className="block text-sm font-bold font-medium text-gray-700"
+                className="block text-sm font-bold text-gray-700"
               >
                 How much?
               </label>
@@ -119,7 +140,9 @@ export const Notification = ({
                 </p>
               </div>
               <button
-                onClick={() => {}}
+                onClick={() => {
+                  onConfirmClicked(totalValue);
+                }}
                 className="ml-auto rounded-lg bg-green-600 px-3 py-2 text-xs font-bold text-white shadow-lg hover:bg-green-700"
               >
                 Confirm

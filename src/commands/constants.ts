@@ -31,8 +31,8 @@ export const WARPCAST_TO_ETH = {
 export const ENS_TO_TWITTER: Record<string, string> = {
   'vitalik.eth': 'vitalikbuterin',
   'dwr.eth': 'dwr',
-  'levertz.eth': '_geoist',
-  'geoist.eth': '_levertz',
+  'levertz.eth': '_levertz',
+  'geoist.eth': '_geoist',
 };
 
 export const ENS_TO_FARCASTER: Record<string, string> = {
