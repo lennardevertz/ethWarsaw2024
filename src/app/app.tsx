@@ -1,14 +1,18 @@
-import { withProviders } from './providers';
-import { Popup } from './popup/popup';
-import { useCommandQuery } from 'src/commands/command';
-import { TWITTER_TO_ETH } from 'commands';
 import { LatestTransactions } from 'components';
+import { useLocationData } from 'utils';
+
+import { Popup } from './popup/popup';
+import { withProviders } from './providers';
 
 const ApplicationBase = () => {
+  const { walletAddressFromUserHandle } = useLocationData();
+
   return (
     <>
       <Popup />
-      <LatestTransactions walletAddress={TWITTER_TO_ETH['levertz_']} />
+      {walletAddressFromUserHandle && (
+        <LatestTransactions walletAddress={walletAddressFromUserHandle} />
+      )}
     </>
   );
 };

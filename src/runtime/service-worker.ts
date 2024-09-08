@@ -14,10 +14,11 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
     const command = new commandDefinition(serializedCommand.payload);
     command.id = serializedCommand.id;
 
-    command
-      .handle()
-      .then((response: unknown) => {
-        return sendResponse(response);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const commandRes = command.handle() as any;
+    commandRes
+      .then((res: unknown) => {
+        return sendResponse(res);
       })
       .catch(console.error);
   }

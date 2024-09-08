@@ -2,7 +2,13 @@ import { useState } from 'react';
 
 import { useWallet } from '../app/providers';
 
-export const ConfirmTransactionForm = () => {
+type ConfirmTransactionFormProps = {
+  onConfirmClicked: (amount: number) => void;
+};
+
+export const ConfirmTransactionForm = ({
+  onConfirmClicked,
+}: ConfirmTransactionFormProps) => {
   const { balance } = useWallet();
 
   const [balancePercentage, setBalancePercentage] = useState(10);
@@ -45,7 +51,9 @@ export const ConfirmTransactionForm = () => {
           </p>
         </div>
         <button
-          onClick={() => {}}
+          onClick={() => {
+            return onConfirmClicked(totalValue);
+          }}
           className="ml-auto rounded-lg bg-green-600 px-3 py-2 text-xs font-bold text-white shadow-lg hover:bg-green-700"
         >
           Confirm

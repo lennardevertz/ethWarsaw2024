@@ -9,7 +9,7 @@ export {
 } from './command';
 export { onWindowMessage } from './on-window-message';
 export { CreatePaymentRequestCommand } from './create-payment-request';
-export { GetEnsAddressCommand } from './get-ens-address-command';
+export { GetEnsAddressCommand } from './get-address-ens-command';
 export type {
   LatestTransactionQueryResponse,
   Swap,
@@ -26,3 +26,6 @@ export {
 } from './constants';
 export { GetWalletBalanceCommand } from './get-wallet-balance';
 export { GetSettingsCommand } from './get-settings';
+export { GetAddressesEnsesCommand } from './get-addresses-enses-command';
+export { SubmitDegenModeTransactionCommand } from './degen-mode';
+export type { BrianResponse } from './get-brian-response';

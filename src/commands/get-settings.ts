@@ -1,18 +1,13 @@
 import { createPublicClient, http, getContract, Hex } from 'viem';
 
-import {
-  aleph,
-  SETTINGS_ADDRESS,
-  SETTINGS_ABI,
-  ALEPH_URL,
-} from '../../contract/constants';
+import { aleph, ALEPH_URL, SETTINGS_ABI, SETTINGS_ADDRESS } from 'consts';
 
 import { Command } from './command';
 
 type Payload = { address: Hex };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export class GetSettingsCommand extends Command<Payload, any> {
+export class GetSettingsCommand extends Command<Payload, Hex[]> {
   public readonly name = 'GetSettingsCommand' as const;
 
   constructor(public payload: Payload) {
@@ -35,6 +30,6 @@ export class GetSettingsCommand extends Command<Payload, any> {
 
     const setting = await contract.read.getAddresses([this.payload.address]);
 
-    return setting;
+    return [...setting];
   }
 }
