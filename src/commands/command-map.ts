@@ -5,6 +5,7 @@ import { GetSettingsCommand } from './get-settings';
 import { GetLatestTransactionsCommand } from './get-latest-transactions';
 import { GetWalletBalanceCommand } from './get-wallet-balance';
 import { GetBrianResponseCommand } from './get-brian-response';
+import { SubmitDegenModeTransactionCommand } from './degen-mode';
 
 export const COMMAND_MAP = {
   [CreatePaymentRequestCommand.name]: CreatePaymentRequestCommand,
@@ -14,4 +15,5 @@ export const COMMAND_MAP = {
   [GetAddressesEnsesCommand.name]: GetAddressesEnsesCommand,
   [GetEnsAddressCommand.name]: GetEnsAddressCommand,
   [GetBrianResponseCommand.name]: GetBrianResponseCommand,
+  [SubmitDegenModeTransactionCommand.name]: SubmitDegenModeTransactionCommand,
 };
