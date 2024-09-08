@@ -46,3 +46,5 @@ The background image used in the logo was generated with the [Midjourney](https:
 
 
 
+Hackathon payout wallet address: 0x04eDF947C389B24615564318b5f10c474863c752
+
