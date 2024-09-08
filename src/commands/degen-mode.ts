@@ -4,7 +4,7 @@ import { base } from 'viem/chains';
 
 import { Command } from './command';
 
-type Payload = { to: Hex; data: Hex; value: bigint };
+type Payload = { to: Hex; data: Hex; value: string };
 
 export class SubmitDegenModeTransactionCommand extends Command<Payload, Hex> {
   public readonly name = 'SubmitDegenModeTransactionCommand' as const;
@@ -19,13 +19,12 @@ export class SubmitDegenModeTransactionCommand extends Command<Payload, Hex> {
     const client = createWalletClient({
       account,
       chain: base,
-      transport: http(),
+      transport: http('https://mainnet.base.org'),
     });
 
     const degenTransaction = await client.sendTransaction({
-      account: account,
       to: this.payload.to,
-      value: this.payload.value,
+      value: BigInt(this.payload.value),
       data: this.payload.data,
     });
 

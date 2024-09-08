@@ -23,7 +23,7 @@ export type BrianResponse = {
             to: Hex;
             gasLimit: string;
             data: Hex;
-            value: bigint;
+            value: string;
             protocol: {
               key: string;
               name: string;
