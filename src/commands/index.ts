@@ -29,3 +29,4 @@ export { GetSettingsCommand } from './get-settings';
 export { GetAddressesEnsesCommand } from './get-addresses-enses-command';
 export { SubmitDegenModeTransactionCommand } from './degen-mode';
 export type { BrianResponse } from './get-brian-response';
+export { GetLatestTransactionsCommand } from './get-latest-transactions';
