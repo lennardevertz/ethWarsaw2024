@@ -1,3 +1,5 @@
+import { defineChain } from 'viem';
+
 import { dwrAvatar, geoistAvatar, levertzAvatar, vitalikAvatar } from 'images';
 
 export const COMMAND_BUS_REQUEST_MESSAGE = 'COMMAND_BUS_REQUEST_MESSAGE';
@@ -26,12 +28,6 @@ export const WARPCAST_TO_ETH = {
   'levertz': '0x4a3755eB99ae8b22AaFB8f16F0C51CF68Eb60b85',
 } as const;
 
-export const FILTERED_OUT_COINS = ['USDC', 'ETH', 'USDT', 'WETH', 'DAI'];
-
-export const UNISWAP_V3_BASE_URL = `https://gateway.thegraph.com/api/${process.env.UNISWAP_API_KEY}`;
-
-export const EXTENSION_BUTTON_CLICKED = 'EXTENSION_BUTTON_CLICKED';
-
 export const ENS_TO_TWITTER: Record<string, string> = {
   'vitalik.eth': 'vitalikbuterin',
   'dwr.eth': 'dwr',
@@ -52,3 +48,109 @@ export const ENS_TO_AVATAR: Record<string, string> = {
   'dwr.eth': dwrAvatar,
   'vitalik.eth': vitalikAvatar,
 };
+
+export const FILTERED_OUT_COINS = ['USDC', 'ETH', 'USDT', 'WETH', 'DAI'];
+
+export const UNISWAP_V3_BASE_URL = `https://gateway.thegraph.com/api/${process.env.UNISWAP_API_KEY}`;
+
+export const EXTENSION_BUTTON_CLICKED = 'EXTENSION_BUTTON_CLICKED';
+
+export const ALEPH_URL = 'https://alephzero.drpc.org';
+export const SETTINGS_ADDRESS = '0x88751b2Be2578825E8b7662d74f63639D0C10222';
+
+export const SETTINGS_ABI = [
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_newAddress',
+        type: 'address',
+      },
+    ],
+    name: 'addAddress',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    name: 'addressMapping',
+    outputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_user',
+        type: 'address',
+      },
+    ],
+    name: 'getAddresses',
+    outputs: [
+      {
+        internalType: 'address[]',
+        name: '',
+        type: 'address[]',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_removeAddress',
+        type: 'address',
+      },
+    ],
+    name: 'removeAddress',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+] as const;
+
+export const aleph = defineChain({
+  id: 41455,
+  name: 'Aleph Zero EVM',
+  network: 'aleph',
+  nativeCurrency: {
+    name: 'AZERO',
+    symbol: 'AZERO',
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: {
+      http: ['https://rpc.alephzero.raas.gelato.cloud'],
+      webSocket: ['wss://ws.alephzero.raas.gelato.cloud'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: 'Aleph Blockscout',
+      url: 'https://evm-explorer.alephzero.org/',
+      apiUrl: 'https://evm-explorer.alephzero.org/api',
+    },
+  },
+  testnet: false,
+});
